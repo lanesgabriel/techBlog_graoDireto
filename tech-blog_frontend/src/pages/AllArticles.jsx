@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getArticles } from '../services/api';
+import Pagination from '../components/Pagination'; 
 import { Container, ListGroup, Button, Badge, Row, Col, Form } from 'react-bootstrap';
+import '../styles/global.css';
+import { FiEdit } from 'react-icons/fi';
 
 const AllArticles = () => {
   const navigate = useNavigate();
@@ -22,7 +25,6 @@ const AllArticles = () => {
     fetchArticles();
   }, []);
 
-  // Filtra artigos por tag ou pesquisa
   useEffect(() => {
     let filtered = articles;
 
@@ -37,36 +39,37 @@ const AllArticles = () => {
     }
 
     setFilteredArticles(filtered);
-    setCurrentPage(1); // Reseta para a primeira página ao filtrar
+    setCurrentPage(1);
   }, [selectedTag, searchQuery, articles]);
 
-  // Paginação
+
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle);
   const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Container className="mt-4">
-      {/* Cabeçalho */}
-      <Row className="align-items-center mb-3">
+      <Row className="align-items-center mb-0">
         <Col>
-          <h1 className="mb-0">📚 Todos os artigos</h1>
+          <h2 className="mb-0 fw-bold">Todos os artigos</h2>
         </Col>
         <Col xs="auto">
-          <Button variant="success" onClick={() => navigate('/new-article')}>
-            ➕ Criar Novo Artigo
+          <Button className="btn-primary-green" variant="success" onClick={() => navigate('/new-article')}>
+            Criar artigo
           </Button>
         </Col>
       </Row>
 
-      {/* Filtros por tags */}
-      <div className="mb-3">
+      <div className="mb-2">
         {['Frontend', 'Backend', 'Mobile'].map(tag => (
           <Badge 
             key={tag} 
             bg={selectedTag === tag ? "primary" : "secondary"} 
-            className="me-2 p-2 cursor-pointer"
+            className="me-2 p-2 cursor-pointer article-tag"
             style={{ cursor: 'pointer' }}
             onClick={() => setSelectedTag(selectedTag === tag ? null : tag)}
           >
@@ -75,71 +78,53 @@ const AllArticles = () => {
         ))}
       </div>
 
-      {/* Campo de pesquisa */}
-      <Form className="mb-3">
+      <Form className="mb-1">
         <Form.Control
+          className="mb-3 custom-input"
           type="text"
-          placeholder="🔍 Pesquisar artigos pelo nome..."
+          placeholder="Pesquisar..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </Form>
 
-      {/* Lista de artigos */}
-      <ListGroup>
-  {currentArticles.map((article) => (
-    <ListGroup.Item key={article.id} className="p-3">
-      <Row>
-        <Col xs={8}>
-          <h5 className="mb-1">{article.title}</h5>
-          <p className="text-muted mb-1">{article.content.substring(0, 100)}...</p>
-          {article.tags.split(',').map((tag, index) => (
-            <Badge key={index} bg="secondary" className="me-1">{tag.trim()}</Badge>
-          ))}
-        </Col>
-        <Col xs={4} className="text-end">
-          <Button 
-            variant="success" 
-            className="me-2"
+      <ListGroup className="custom-list-group">
+        {currentArticles.map((article) => (
+          <ListGroup.Item 
+            key={article.id} 
+            className="p-3" 
+            style={{ cursor: 'pointer' }}
             onClick={() => navigate(`/articles/${article.id}`)}
           >
-            Ler mais
-          </Button>
-          <Button 
-            variant="warning"
-            onClick={() => navigate(`/edit-article/${article.id}`)}
-          >
-            ✏️ Editar
-          </Button>
-        </Col>
-      </Row>
-    </ListGroup.Item>
-  ))}
-</ListGroup>
+            <Row>
+              <Col xs={8}>
+                <h5 className="mb-1">{article.title}</h5>
+                <p className="text-muted mb-1">{article.content.substring(0, 100)}...</p>
+                {article.tags.split(',').map((tag, index) => (
+                  <Badge key={index} className="article-tag me-1">{tag.trim()}</Badge>
+                ))}
+              </Col>
+              <Col xs={4} className="text-end">
+                <Button 
+                  className="btn-icon" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/edit-article/${article.id}`);
+                  }}
+                >
+                  <FiEdit size={18} /> 
+                </Button>
+              </Col>
+            </Row>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
 
-
-      {/* Paginação */}
-      <div className="d-flex justify-content-center mt-4">
-        <Button 
-          variant="outline-primary" 
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-          className="me-2"
-        >
-          ← Anterior
-        </Button>
-        
-        <span className="align-self-center">Página {currentPage} de {totalPages}</span>
-        
-        <Button 
-          variant="outline-primary" 
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-          className="ms-2"
-        >
-          Próxima →
-        </Button>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </Container>
   );
 };

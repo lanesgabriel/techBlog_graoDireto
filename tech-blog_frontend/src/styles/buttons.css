@@ -1,0 +1,54 @@
+button, .btn-primary-green {
+    background-color: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover, .btn-primary-green:hover {
+    background-color: var(--primary-green-dark);
+  }
+  
+  button:active, .btn-primary-green:active {
+    background-color: var(--primary-green-darker);
+  }
+  
+  button:disabled, .btn-primary-green:disabled {
+    background-color: var(--primary-green-dark);
+    border: none;
+  }
+  
+  .btn-logout {
+    background: rgba(103, 162, 45, 0.1);
+    color: var(--text-color);
+    border: none;
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .btn-logout:hover {
+    background: rgba(103, 162, 45, 0.2);
+  }
+  
+  .btn-icon {
+    background: none;
+    color: var(--primary-green);
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .btn-icon:hover {
+    color: var(--primary-green-dark);
+    background: none;
+  }
+  

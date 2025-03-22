@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000', // URL do backend
+  baseURL: 'http://localhost:3000',
 });
 
 export const getArticles = async () => {
@@ -24,17 +24,19 @@ export const updateArticle = async (id, article) => {
   return response.data;
 };
 
-export const deleteArticle = async (id) => {
-  const response = await api.delete(`/articles/${id}`);
-  return response.data;
-};
+// Rotas ainda não utilizadas. A serem implementadas posteiormente.
 
-export const searchArticlesByTag = async (tag) => {
-  const response = await api.get(`/articles/search/tag?tag=${tag}`);
-  return response.data;
-};
+// export const deleteArticle = async (id) => {
+//   const response = await api.delete(`/articles/${id}`);
+//   return response.data;
+// };
 
-export const searchArticlesByAuthor = async (authorId) => {
-  const response = await api.get(`/articles/search/author?authorId=${authorId}`);
-  return response.data;
-};
+// export const searchArticlesByTag = async (tag) => {
+//   const response = await api.get(`/articles/search/tag?tag=${tag}`);
+//   return response.data;
+// };
+
+// export const searchArticlesByAuthor = async (authorId) => {
+//   const response = await api.get(`/articles/search/author?authorId=${authorId}`);
+//   return response.data;
+// };

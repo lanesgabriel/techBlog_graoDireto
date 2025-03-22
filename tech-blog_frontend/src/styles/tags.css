@@ -1,0 +1,22 @@
+.article-tag {
+    background-color: rgba(103, 162, 45, 0.1) !important;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin-right: 5px;
+  }
+  
+  .article-tag:hover {
+    color: var(--primary-green-dark);
+  }
+  
+  .selected-tag {
+    color: var(--primary-green) !important;
+  }
+  
+  .custom-list-group .list-group-item {
+    border: none !important;
+    border-radius: 0 !important;
+  }
+  
